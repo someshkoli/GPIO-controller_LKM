@@ -18,8 +18,9 @@ int main(){
    printf("Type in a short string to send to the kernel module:\n");
    scanf("%[^\n]%*c", stringToSend);                // Read in a string (with spaces)
    printf("Writing message to the device [%s].\n", stringToSend);
-   ret = write(fd, stringToSend, strlen(stringToSend)); // Send the string to the LKM
+   ret = write(fd, stringToSend, BUFFER_LENGTH); // Send the string to the LKM
    if (ret < 0){
+       printf("helo");
       perror("Failed to write the message to the device.");
       return errno;
    }
@@ -27,7 +28,7 @@ int main(){
    printf("Press ENTER to read back from the device...\n");
    getchar();
    printf("Reading from the device...\n");
-   ret = read(fd, receive, BUFFER_LENGTH);        // Read the response from the LKM
+   ret = read(fd, receive, strlen(stringToSend));        // Read the response from the LKM
    if (ret < 0){
       perror("failed to read the message from the device.");
       return errno;
